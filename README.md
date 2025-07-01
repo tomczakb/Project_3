@@ -2,9 +2,9 @@ Team Name
 Time Bandits
 
 Team Members
-Benjamin Tomczak
-Manato Igawa
-Maximilian Preble
+Benjamin
+Manato
+Maximilian
 
 Project Title
 Reliable Retail

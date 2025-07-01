@@ -5,17 +5,16 @@ using namespace std;
 void userInput();
 void displayMenu();
 bool regexCheck();
-void commandParse(bool exit, string& command);
+void commandParse(string& command);
 void goodbyeMessage();
 
 void userInput()
 {
-    bool exit = false;
     displayMenu();
     string command;
     cin >> command;
     if (&regexCheck)
-        commandParse(exit, command);
+        commandParse(command);
     else
     {
         cout << "Invalid Input: enter 1-8." << endl;
@@ -60,8 +59,9 @@ bool regexCheck()
     return validInput;
 }
 
-void commandParse(bool exit, string &command)
+void commandParse(string& command)
 {
+    bool exit = false;
     if (command == "1")
         loadTransactionData();
     else if (command == "2")

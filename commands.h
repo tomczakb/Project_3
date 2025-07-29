@@ -1,23 +1,56 @@
 #pragma once
 #include <fstream>
 #include <sstream>
-using namespace std;
+#include "SalesItem.h"
 
-void loadTransactionData()
-{
-    ifstream file("Online_Retail_Data.txt");
-    string header;
-    string line;
-    if (file.is_open())
-        cout << "File opened successfully." << endl;
-    getline(file, header);              // Burn the headers
-    cout << "Headers are: " << endl;
-    cout << header << endl;
+std::unordered_map<std::string, std::vector<SalesItem>> parseSalesData(const std::string& filename) {
+    std::unordered_map<std::string, std::vector<SalesItem>> invoiceData;
+    std::ifstream file(filename);
 
-    while (getline(file, line))
-    {
-        //create cout or comment out to manage data in other functions
+    if (!file.is_open()) {
+        std::cerr << "Error: Could not open file '" << filename << "'" << std::endl;
+        return invoiceData;
     }
+
+    std::string line;
+    std::getline(file, line);
+
+    while (std::getline(file, line)) {
+        std::stringstream ss(line);
+        std::string field;
+
+        std::string invoiceNo;
+        std::string stockCode;
+        std::string description;
+        std::string quantityStr;
+        std::string invoiceDate;
+        std::string unitPriceStr;
+        std::string customerIDStr;
+        std::string country;
+
+        std::getline(ss, invoiceNo, ',');
+        std::getline(ss, stockCode, ',');
+        std::getline(ss, description, ',');
+        std::getline(ss, quantityStr, ',');
+        std::getline(ss, invoiceDate, ',');
+        std::getline(ss, unitPriceStr, ',');
+        std::getline(ss, customerIDStr, ',');
+        std::getline(ss, country);
+
+        int quantity = std::stoi(quantityStr);
+        double unitPrice = std::stod(unitPriceStr);
+        int customerID = 0; // Default value if field is empty or not present
+        if (!customerIDStr.empty()) {
+            customerID = std::stoi(customerIDStr);
+        }
+
+        SalesItem item(stockCode, description, quantity, invoiceDate, unitPrice, customerID, country);
+
+        invoiceData[invoiceNo].push_back(item);
+    }
+
+    file.close();
+    return invoiceData;
 }
 
 void vectorizeTransactions()

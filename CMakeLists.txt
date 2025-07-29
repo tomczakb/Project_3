@@ -4,5 +4,7 @@ project(Project_3)
 set(CMAKE_CXX_STANDARD 14)
 
 add_executable(Project_3 main.cpp
+        SalesItem.cpp
+        SalesItem.h
         menu_and_parsing.h
         commands.h)

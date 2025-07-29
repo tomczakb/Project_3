@@ -63,7 +63,7 @@ void commandParse(string& command)
 {
     bool exit = false;
     if (command == "1")
-        loadTransactionData();
+        parseSalesData("Online_Retail_Data.txt");
     else if (command == "2")
         vectorizeTransactions();
     else if (command == "3")

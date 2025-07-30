@@ -46,7 +46,8 @@ void displayMenu()
     "5. Show Top-N Similar Transactions\n"
     "6. Visualize Success Patterns\n"
     "7. Export Results\n"
-    "8. Exit\n"
+    "8. Unify Purchases\n"
+    "9. Exit\n"
     "\n"
     "Enter your choice [1-8]: ";
 }
@@ -69,6 +70,9 @@ void commandParse(string& command)
     else if (command == "7")
         exportResults();
     else if (command == "8")
+        //instantiate map here
+        unifyPurchases();
+    else if (command == "9")
     {
         exit = true;
     }

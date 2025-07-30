@@ -11,9 +11,10 @@ struct SalesItem {
     double UnitPrice;
     int CustomerID;
     std::string Country;
+    std::string SubCategory;
     SalesItem(std::string sc = "", std::string desc = "", int qty = 0,
               std::string idate = "", double uprice = 0.0, int custid = 0,
-              std::string country = "");
+              std::string country = "", std::string subcategory = "");
 };
 
 

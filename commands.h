@@ -34,6 +34,7 @@ std::unordered_map<std::string, std::vector<SalesItem>> parseSalesData(const std
         std::string unitPriceStr;
         std::string customerIDStr;
         std::string country;
+        std::string subCategory;
 
         std::getline(ss, invoiceNo, ',');
         std::getline(ss, stockCode, ',');
@@ -48,7 +49,8 @@ std::unordered_map<std::string, std::vector<SalesItem>> parseSalesData(const std
         std::getline(ss, invoiceDate, ',');
         std::getline(ss, unitPriceStr, ',');
         std::getline(ss, customerIDStr, ',');
-        std::getline(ss, country);
+        std::getline(ss, country, ',');
+        std::getline(ss, subCategory);
 
         int quantity = std::stoi(quantityStr);
         double unitPrice = std::stod(unitPriceStr);
@@ -56,7 +58,7 @@ std::unordered_map<std::string, std::vector<SalesItem>> parseSalesData(const std
         if (!customerIDStr.empty()) {
             customerID = std::stoi(customerIDStr);
         }
-        SalesItem item(stockCode, description, quantity, invoiceDate, unitPrice, customerID, country);
+        SalesItem item(stockCode, description, quantity, invoiceDate, unitPrice, customerID, country, subCategory);
 
         invoiceData[invoiceNo].push_back(item);
     }

@@ -41,7 +41,7 @@ std::unordered_map<std::string, std::vector<SalesItem>> parseSalesData(const std
         std::getline(ss, description, ',');
         std::getline(ss, quantityStr, ',');
         if (description[0] == '"')
-            if (!regexCheck(quantityStr))
+            while (!regexCheck(quantityStr))
             {
                 description += " " + quantityStr;
                 std::getline(ss, quantityStr, ',');

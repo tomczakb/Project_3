@@ -1,7 +1,14 @@
 #pragma once
 #include <fstream>
 #include <sstream>
+#include <regex>
 #include "SalesItem.h"
+
+bool regexCheck(std::string input)
+{
+    std::regex obj = std::regex("-?\\d+");
+    return regex_match(input, obj);
+}
 
 std::unordered_map<std::string, std::vector<SalesItem>> parseSalesData(const std::string& filename) {
     std::unordered_map<std::string, std::vector<SalesItem>> invoiceData;
@@ -31,14 +38,13 @@ std::unordered_map<std::string, std::vector<SalesItem>> parseSalesData(const std
         std::getline(ss, invoiceNo, ',');
         std::getline(ss, stockCode, ',');
         std::getline(ss, description, ',');
-        if (description[0] == '"')
-        {
-            std::string descriptionPre = description.substr(1, description.size() - 1);
-            std::getline(ss, description, ',');
-            description = descriptionPre + ", " + description;
-            description.pop_back();
-        }
         std::getline(ss, quantityStr, ',');
+        if (description[0] == '"')
+            if (!regexCheck(quantityStr))
+            {
+                description += " " + quantityStr;
+                std::getline(ss, quantityStr, ',');
+            }
         std::getline(ss, invoiceDate, ',');
         std::getline(ss, unitPriceStr, ',');
         std::getline(ss, customerIDStr, ',');
@@ -50,7 +56,6 @@ std::unordered_map<std::string, std::vector<SalesItem>> parseSalesData(const std
         if (!customerIDStr.empty()) {
             customerID = std::stoi(customerIDStr);
         }
-        std::cout << invoiceNo << std::endl;
         SalesItem item(stockCode, description, quantity, invoiceDate, unitPrice, customerID, country);
 
         invoiceData[invoiceNo].push_back(item);

@@ -4,7 +4,6 @@ using namespace std;
 
 void userInput();
 void displayMenu();
-bool regexCheck();
 void commandParse(string& command);
 void goodbyeMessage();
 
@@ -50,13 +49,6 @@ void displayMenu()
     "8. Exit\n"
     "\n"
     "Enter your choice [1-8]: ";
-}
-
-bool regexCheck()
-{
-    bool validInput = true;
-    //insert regexCheck for invalid inputs
-    return validInput;
 }
 
 void commandParse(string& command)

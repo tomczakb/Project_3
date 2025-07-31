@@ -69,9 +69,68 @@ std::unordered_map<std::string, std::vector<SalesItem>> parseSalesData(const std
     return invoiceData;
 }
 
-void vectorizeTransactions()
-{
-    //Vectorize Transactions
+std::unordered_map<std::string, std::unordered_map<std::string, int>> buildCoPurchaseGraph(const std::unordered_map<std::string, std::vector<SalesItem>>& invoiceData) {
+    std::unordered_map<std::string, std::unordered_map<std::string, int>> graph;
+
+    for (const auto& pair : invoiceData) {
+        const std::vector<SalesItem>& items = pair.second;
+        std::unordered_set<std::string> uniqueStockCodes;
+        for (const auto& item : items) {
+            uniqueStockCodes.insert(item.StockCode);
+        }
+
+        std::vector<std::string> stockCodesVec(uniqueStockCodes.begin(), uniqueStockCodes.end());
+
+        for (size_t i = 0; i < stockCodesVec.size(); ++i) {
+            for (size_t j = i + 1; j < stockCodesVec.size(); ++j) {
+                const std::string& item1 = stockCodesVec[i];
+                const std::string& item2 = stockCodesVec[j];
+
+                graph[item1][item2]++;
+                graph[item2][item1]++;
+            }
+        }
+    }
+
+    return graph;
+}
+
+std::vector<std::string> longestCoPurchaseSimplePath(const std::string& startItem, const CoPurchaseGraph& graph) {
+    std::vector<std::string> path;
+    if (graph.find(startItem) == graph.end()) {
+        return path;
+    }
+
+    std::unordered_set<std::string> visited;
+    std::string currentItem = startItem;
+    path.push_back(currentItem);
+    visited.insert(currentItem);
+
+    while (true) {
+        const auto& neighbors = graph.at(currentItem);
+        std::string nextItem = "";
+        int maxWeight = 0;
+
+        for (const auto& neighbor_pair : neighbors) {
+            const std::string& neighbor = neighbor_pair.first;
+            int weight = neighbor_pair.second;
+
+            if (visited.find(neighbor) == visited.end() && weight > maxWeight) {
+                maxWeight = weight;
+                nextItem = neighbor;
+            }
+        }
+
+        if (nextItem.empty()) {
+            break;
+        }
+
+        currentItem = nextItem;
+        path.push_back(currentItem);
+        visited.insert(currentItem);
+    }
+
+    return path;
 }
 
 void buildSimilarityIndex()

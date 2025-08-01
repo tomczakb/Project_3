@@ -55,10 +55,22 @@ void displayMenu()
 void commandParse(string& command)
 {
     bool exit = false;
+    std::unordered_map<std::string, std::vector<SalesItem>> invoiceData;
     if (command == "1")
-        parseSalesData("Online_Retail_Data2.txt");
+        invoiceData = parseSalesData("Online_Retail_Data2.txt");
     else if (command == "2")
-        vectorizeTransactions();
+    {
+        cout << "Enter Transaction ID: ";
+        std::vector <string> path;
+        string startItem;
+        cin >> startItem;
+        std::unordered_map<std::string, std::unordered_map<std::string, int>> graph = buildCoPurchaseGraph(invoiceData);
+        path = longestCoPurchaseSimplePath(startItem, graph);
+        cout << "The longest simple path is: " << endl;
+        for (const auto& i : path)
+            cout << i << endl;
+    }
+
     else if (command == "3")
         buildSimilarityIndex();
     else if (command == "4")

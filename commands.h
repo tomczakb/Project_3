@@ -95,7 +95,7 @@ std::unordered_map<std::string, std::unordered_map<std::string, int>> buildCoPur
     return graph;
 }
 
-std::vector<std::string> longestCoPurchaseSimplePath(const std::string& startItem, const CoPurchaseGraph& graph) {
+std::vector<std::string> longestCoPurchaseSimplePath(const std::string& startItem, const std::unordered_map<std::string, std::unordered_map<std::string, int>>& graph) {
     std::vector<std::string> path;
     if (graph.find(startItem) == graph.end()) {
         return path;

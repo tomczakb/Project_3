@@ -8,6 +8,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include "commands.h"
+#include <queue>
 #include "SalesItem.h"
 
 std::vector<std::string> subCategories = {
@@ -143,6 +144,7 @@ std::vector<std::string> longestCoPurchaseSimplePath(const std::string& startIte
     return path;
 }
 
+
 void buildSimilarityIndex()
 {
     std::unordered_map<std::string, std::vector<SalesItem>> invoiceData = parseSalesData("Online_Retail_Data2.txt");
@@ -167,15 +169,64 @@ void buildSimilarityIndex()
     std::cout << "Similarity Index was successfully built using category count vectors." << std::endl;
 }
 
+
 void scoreNewTransaction()
 {
     //Score New Transaction
 }
 
+
 void showSimilarTransactions()
 {
-    //Show Top-N Similar Transactions
+    std::string baseInvoice = "536365";
+    int topN = 5;
+
+    if (allInvoiceCat.find(baseInvoice) == allInvoiceCat.end()) {
+        std::cout << "Invoice " << baseInvoice << " not found in the dataset." << std::endl;
+        return;
+    }
+
+    auto comp = [](const std::pair<double, std::string>& a,
+                   const std::pair<double, std::string>& b) {
+        return a.first < b.first;
+    };
+
+    std::priority_queue<
+        std::pair<double, std::string>,
+        std::vector<std::pair<double, std::string>>,
+        decltype(comp)
+    > maxHeap(comp);
+
+    for (const auto& [invoiceID, vec] : allInvoiceCat) {
+        if (invoiceID == baseInvoice) continue;
+
+        double dist = 0.0;
+        for (const auto& cat : subCategories) {
+            int diff = allInvoiceCat.at(baseInvoice).at(cat) - vec.at(cat);
+            dist += diff * diff;
+        }
+        dist = std::sqrt(dist);
+
+        maxHeap.emplace(dist, invoiceID);
+        if ((int)maxHeap.size() > topN) {
+            maxHeap.pop();
+        }
+    }
+
+    std::vector<std::pair<double, std::string>> results;
+    while (!maxHeap.empty()) {
+        results.push_back(maxHeap.top());
+        maxHeap.pop();
+    }
+    std::reverse(results.begin(), results.end());
+
+    std::cout << "[Top " << topN << " Similar Transactions using Heap]" << std::endl;
+    for (const auto& [dist, id] : results) {
+        std::cout << "Invoice: " << id
+                  << " | Similarity Distance: " << dist << std::endl;
+    }
 }
+
 
 void visualizeSuccessPatterns()
 {

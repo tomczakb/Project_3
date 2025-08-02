@@ -7,4 +7,5 @@ add_executable(Project_3 main.cpp
         SalesItem.cpp
         SalesItem.h
         menu_and_parsing.h
-        commands.h)
+        commands.h
+        commands.cpp)

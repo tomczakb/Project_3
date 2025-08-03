@@ -57,7 +57,9 @@ void commandParse(string& command)
     bool exit = false;
     std::unordered_map<std::string, std::vector<SalesItem>> invoiceData;
     if (command == "1")
+    {
         invoiceData = parseSalesData("Online_Retail_Data2.txt");
+    }
     else if (command == "2")
     {
         cout << "Enter Transaction ID: ";
@@ -70,7 +72,6 @@ void commandParse(string& command)
         for (const auto& i : path)
             cout << i << endl;
     }
-
     else if (command == "3")
         buildSimilarityIndex();
     else if (command == "4")
@@ -82,8 +83,16 @@ void commandParse(string& command)
     else if (command == "7")
         exportResults();
     else if (command == "8")
-        //instantiate map here
-        unifyPurchases();
+    {
+        cout << "Choose an invoice number for the sample cart:\n"
+        "536520\n"
+        "536522\n"
+        "536535\n"
+        "Enter your selection here: ";
+        string sampleInvoice;
+        cin >> sampleInvoice;
+        unifyPurchases(sampleInvoice);
+    }
     else if (command == "9")
     {
         exit = true;

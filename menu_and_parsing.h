@@ -62,15 +62,8 @@ void commandParse(string& command)
     }
     else if (command == "2")
     {
-        cout << "Enter Transaction ID: ";
-        std::vector <string> path;
-        string startItem;
-        cin >> startItem;
         std::unordered_map<std::string, std::unordered_map<std::string, int>> graph = buildCoPurchaseGraph(invoiceData);
-        path = longestCoPurchaseSimplePath(startItem, graph);
-        cout << "The longest simple path is: " << endl;
-        for (const auto& i : path)
-            cout << i << endl;
+        longestCoPurchaseSimplePath(startItem, graph);
     }
     else if (command == "3")
         buildSimilarityIndex();

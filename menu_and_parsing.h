@@ -63,7 +63,7 @@ void commandParse(string& command)
     else if (command == "2")
     {
         std::unordered_map<std::string, std::unordered_map<std::string, int>> graph = buildCoPurchaseGraph(invoiceData);
-        longestCoPurchaseSimplePath(startItem, graph);
+        longestCoPurchaseSimplePath(graph);
     }
     else if (command == "3")
         buildSimilarityIndex();

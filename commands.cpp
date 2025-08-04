@@ -312,13 +312,25 @@ void unifyPurchases(std::string& sampleInvoice)
                     }
                 }
         }
+    std::cout << "Please input how many suggestions would you like to see: ";
+    std::string numSuggestions;
+    std::cin >> numSuggestions;
+    if (!regexCheck(numSuggestions))
+    {
+        std::cout << "Input a valid integer: ";
+        std::cin >> numSuggestions;
+    }
+    int numOutput = std::stoi(numSuggestions);
     std::cout << "\nOther customers with similar carts also ordered the follow items:" << std::endl;
-    if (addToCart.size() > 3)
-        for (int i = 0; i < 3; i++)
+    if (addToCart.size() > numOutput)
+        for (int i = 0; i < numOutput; i++)
             std::cout << addToCart[i] << std::endl;
     else
+    {
+        std::cout << "There are only " << addToCart.size() << "similar items. They are: " << std::endl;
         for (auto i : addToCart)
             std::cout << i << std::endl;
+    }
     if (addToCart.size() > 1)
         std::cout << "These may be useful additions to your cart.\n" << std::endl;
     else

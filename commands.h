@@ -10,9 +10,7 @@ bool regexCheck(std::string input);
 std::unordered_map<std::string, std::vector<SalesItem>> parseSalesData(const std::string& filename);
 std::unordered_map<std::string, std::unordered_map<std::string, int>> buildCoPurchaseGraph(
     const std::unordered_map<std::string, std::vector<SalesItem>>& invoiceData);
-std::vector<std::string> longestCoPurchaseSimplePath(
-    const std::string& startItem,
-    const std::unordered_map<std::string, std::unordered_map<std::string, int>>& graph);
+void longestCoPurchaseSimplePath(const std::unordered_map<std::string, std::unordered_map<std::string, int>>& graph);
 void buildSimilarityIndex();
 void showSimilarTransactions();
 std::vector<std::pair<int, std::string>> findSimilar(

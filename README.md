@@ -1,3 +1,6 @@
+Instructions:
+Download and expand "Online_Retail_Data2.zip" along with the source code. Note that the other Retail_Data.zip file is retained in the repo only for archival purposes, since it was the original dataset. However, the original does not have the categories required for the current source code: attempting to use it would cause execution errors. Move "Online_Retail_Data2.zip" into your cmake-build-debug folder (CLion) and run the program. Be sure to "Load Transaction Data" (menu item 1) prior to executing the other menu items.
+
 Team Name
 Time Bandits
 

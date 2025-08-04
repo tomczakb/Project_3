@@ -178,13 +178,29 @@ void scoreNewTransaction()
 
 void showSimilarTransactions()
 {
+    if (allInvoiceCat.empty()) {
+        std::cout << "Building similarity index..." << std::endl;
+        std::unordered_map<std::string, std::vector<SalesItem>> invoiceData = parseSalesData("Online_Retail_Data2.txt");
+        allInvoiceCat.clear();
+        for (const auto& invoicePair : invoiceData) {
+            std::unordered_map<std::string, int> oneInvoiceCat;
+            for (const auto& item : invoicePair.second) {
+                oneInvoiceCat[item.SubCategory]++;
+            }
+            for (const auto& cat : subCategories) {
+                if (oneInvoiceCat.find(cat) == oneInvoiceCat.end())
+                    oneInvoiceCat[cat] = 0;
+            }
+            allInvoiceCat[invoicePair.first] = oneInvoiceCat;
+        }
+    }
+
     std::string baseInvoice;
     std::cout << "Enter base invoice number (e.g., 536365): ";
     std::cin >> baseInvoice;
 
     int topN;
     std::cout << "How many similar transactions would you like to see? ";
-
 
     if (allInvoiceCat.find(baseInvoice) == allInvoiceCat.end()) {
         std::cout << "Invoice " << baseInvoice << " not found in the dataset." << std::endl;

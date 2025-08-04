@@ -1,4 +1,6 @@
 #pragma once
+#include <regex>
+
 #include "commands.h"
 using namespace std;
 
@@ -12,11 +14,11 @@ void userInput()
     displayMenu();
     string command;
     cin >> command;
-    if (&regexCheck)
+    if (regex_match(command, std::regex("[1-6]")))
         commandParse(command);
-    else
-    {
-        cout << "Invalid Input: enter 1-8." << endl;
+    else {
+        cout << "Invalid Input: enter 1-6." << endl;
+        cout << "" << endl;
         userInput();
     }
 }
@@ -52,7 +54,8 @@ void displayMenu()
 void commandParse(string& command)
 {
     bool exit = false;
-    std::unordered_map<std::string, std::vector<SalesItem>> invoiceData;
+    static std::unordered_map<std::string, std::vector<SalesItem>> invoiceData;
+
     if (command == "1")
     {
         invoiceData = parseSalesData("Online_Retail_Data2.txt");
@@ -91,7 +94,7 @@ void commandParse(string& command)
     if (!exit)
     {
         string exitString;
-        cout << "Press Y to continue or any other key to exit: ";
+        cout << "Press [Y] to continue or any other key to exit: ";
         cin >> exitString;
         if (exitString != "Y" && exitString != "y")
             exit = true;

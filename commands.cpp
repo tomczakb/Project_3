@@ -184,11 +184,7 @@ void showSimilarTransactions()
 
     int topN;
     std::cout << "How many similar transactions would you like to see? ";
-    while (!(std::cin >> topN) || topN <= 0) {
-        std::cout << "Please enter a valid positive number: ";
-        std::cin.clear();
-        std::cin.ignore(10000, '\n');
-    }
+
 
     if (allInvoiceCat.find(baseInvoice) == allInvoiceCat.end()) {
         std::cout << "Invoice " << baseInvoice << " not found in the dataset." << std::endl;

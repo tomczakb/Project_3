@@ -42,14 +42,11 @@ void displayMenu()
     "1. Load Transaction Data\n"
     "2. Vectorize Transactions\n"
     "3. Build Similarity Index\n"
-    "4. Score New Transaction\n"
-    "5. Show Top-N Similar Transactions\n"
-    "6. Visualize Success Patterns\n"
-    "7. Export Results\n"
-    "8. Unify Purchases\n"
-    "9. Exit\n"
+    "4. Show Top-N Similar Transactions\n"
+    "5. Unify Purchases\n"
+    "6. Exit\n"
     "\n"
-    "Enter your choice [1-9]: ";
+    "Enter your choice [1-6]: ";
 }
 
 void commandParse(string& command)
@@ -75,14 +72,8 @@ void commandParse(string& command)
     else if (command == "3")
         buildSimilarityIndex();
     else if (command == "4")
-        scoreNewTransaction();
-    else if (command == "5")
         showSimilarTransactions();
-    else if (command == "6")
-        visualizeSuccessPatterns();
-    else if (command == "7")
-        exportResults();
-    else if (command == "8")
+    else if (command == "5")
     {
         cout << "Choose an invoice number for the sample cart:\n"
         "536520\n"
@@ -93,7 +84,7 @@ void commandParse(string& command)
         cin >> sampleInvoice;
         unifyPurchases(sampleInvoice);
     }
-    else if (command == "9")
+    else if (command == "6")
     {
         exit = true;
     }

@@ -170,29 +170,10 @@ void buildSimilarityIndex()
 }
 
 
-void scoreNewTransaction()
-{
-    //Score New Transaction
-}
-
-
 void showSimilarTransactions()
-{
+{   // Preparation: Build Similarity Index if it does not exist yet
     if (allInvoiceCat.empty()) {
-        std::cout << "Building similarity index..." << std::endl;
-        std::unordered_map<std::string, std::vector<SalesItem>> invoiceData = parseSalesData("Online_Retail_Data2.txt");
-        allInvoiceCat.clear();
-        for (const auto& invoicePair : invoiceData) {
-            std::unordered_map<std::string, int> oneInvoiceCat;
-            for (const auto& item : invoicePair.second) {
-                oneInvoiceCat[item.SubCategory]++;
-            }
-            for (const auto& cat : subCategories) {
-                if (oneInvoiceCat.find(cat) == oneInvoiceCat.end())
-                    oneInvoiceCat[cat] = 0;
-            }
-            allInvoiceCat[invoicePair.first] = oneInvoiceCat;
-        }
+        buildSimilarityIndex();
     }
 
     std::string baseInvoice;
@@ -202,11 +183,17 @@ void showSimilarTransactions()
     int topN;
     std::cout << "How many similar transactions would you like to see? ";
 
+    while (!(std::cin >> topN) || topN <= 0) {
+        std::cout << "Please enter a valid positive number: ";
+        std::cin.clear();
+        std::cin.ignore(10000, '\n');
+    }
+    // If the entered invoice does not exist
     if (allInvoiceCat.find(baseInvoice) == allInvoiceCat.end()) {
         std::cout << "Invoice " << baseInvoice << " not found in the dataset." << std::endl;
         return;
     }
-
+    // Use a priority queue to store distances in ascending order.
     auto comp = [](const std::pair<double, std::string>& a,
                    const std::pair<double, std::string>& b) {
         return a.first > b.first;
@@ -217,8 +204,10 @@ void showSimilarTransactions()
         std::vector<std::pair<double, std::string>>,
         decltype(comp)
     > minHeap(comp);
-
-    for (const auto& [invoiceID, vec] : allInvoiceCat) {
+    // Distance calculation and insertion into heap
+    for (const auto& pair : allInvoiceCat) {
+        const std::string& invoiceID = pair.first;
+        const auto& vec = pair.second;
         if (invoiceID == baseInvoice) continue;
 
         double dist = 0.0;
@@ -230,19 +219,16 @@ void showSimilarTransactions()
 
         minHeap.emplace(dist, invoiceID);
     }
-
+    // Top-N Output
     std::cout << "[Top " << topN << " Similar Transactions using Min-Heap]" << std::endl;
     for (int i = 0; i < topN && !minHeap.empty(); ++i) {
-        auto [dist, id] = minHeap.top(); minHeap.pop();
+        std::pair<double, std::string> top = minHeap.top();
+        minHeap.pop();
+        double dist = top.first;
+        std::string id = top.second;
         std::cout << "Invoice: " << id
                   << " | Similarity Distance: " << dist << std::endl;
     }
-}
-
-
-void visualizeSuccessPatterns()
-{
-    //Visualize Success Patterns
 }
 
 
@@ -332,9 +318,4 @@ void unifyPurchases(std::string& sampleInvoice)
     else
         std::cout << "This may be a useful addition to your cart.\n" << std::endl;
 
-}
-
-void exportResults()
-{
-    //Export Results
 }

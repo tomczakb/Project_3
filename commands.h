@@ -14,12 +14,9 @@ std::vector<std::string> longestCoPurchaseSimplePath(
     const std::string& startItem,
     const std::unordered_map<std::string, std::unordered_map<std::string, int>>& graph);
 void buildSimilarityIndex();
-void scoreNewTransaction();
 void showSimilarTransactions();
-void visualizeSuccessPatterns();
 std::vector<std::pair<int, std::string>> findSimilar(
     std::string& sampleInvoice,
     std::string& simInvoice,
     std::unordered_map<std::string, std::unordered_map<std::string, int>> allInvoiceCat);
 void unifyPurchases(std::string& sampleInvoice);
-void exportResults();

@@ -106,10 +106,13 @@ std::unordered_map<std::string, std::unordered_map<std::string, int>> buildCoPur
     return graph;
 }
 
-std::vector<std::string> longestCoPurchaseSimplePath(const std::string& startItem, const std::unordered_map<std::string, std::unordered_map<std::string, int>>& graph) {
+void longestCoPurchaseSimplePath(const std::unordered_map<std::string, std::unordered_map<std::string, int>>& graph) {
     std::vector<std::string> path;
+    std::string startItem;
+    std::cout << "For what item would you like to see the most likely subsequent purchases?" << std::endl;
+    std::cin >> startItem;
     if (graph.find(startItem) == graph.end()) {
-        return path;
+        std::cout << "Item not found." << std::endl;
     }
 
     std::unordered_set<std::string> visited;
@@ -140,10 +143,13 @@ std::vector<std::string> longestCoPurchaseSimplePath(const std::string& startIte
         path.push_back(currentItem);
         visited.insert(currentItem);
     }
-
-    return path;
+	int nextPurchaseCount;
+    std::cout << "How many subsequent purchases you would like to see?" << std::endl;
+    std::cin >> nextPurchaseCount;
+    for (int i = 0; i < nextPurchaseCount; ++i) {
+      std::cout << path[i] << std::endl;
+    }
 }
-
 
 void buildSimilarityIndex()
 {

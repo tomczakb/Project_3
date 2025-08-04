@@ -1,0 +1,11 @@
+# IDE settings
+.idea/
+
+# CLion build directory
+cmake-build-debug/
+
+# OS-specific files
+.DS_Store
+
+# Optional: logs, temporary files, etc.
+*.log

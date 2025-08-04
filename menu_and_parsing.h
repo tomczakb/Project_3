@@ -49,7 +49,7 @@ void displayMenu()
     "8. Unify Purchases\n"
     "9. Exit\n"
     "\n"
-    "Enter your choice [1-8]: ";
+    "Enter your choice [1-9]: ";
 }
 
 void commandParse(string& command)

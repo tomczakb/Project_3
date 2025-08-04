@@ -178,8 +178,17 @@ void scoreNewTransaction()
 
 void showSimilarTransactions()
 {
-    std::string baseInvoice = "536365";
-    int topN = 5;
+    std::string baseInvoice;
+    std::cout << "Enter base invoice number (e.g., 536365): ";
+    std::cin >> baseInvoice;
+
+    int topN;
+    std::cout << "How many similar transactions would you like to see? ";
+    while (!(std::cin >> topN) || topN <= 0) {
+        std::cout << "Please enter a valid positive number: ";
+        std::cin.clear();
+        std::cin.ignore(10000, '\n');
+    }
 
     if (allInvoiceCat.find(baseInvoice) == allInvoiceCat.end()) {
         std::cout << "Invoice " << baseInvoice << " not found in the dataset." << std::endl;
@@ -188,14 +197,14 @@ void showSimilarTransactions()
 
     auto comp = [](const std::pair<double, std::string>& a,
                    const std::pair<double, std::string>& b) {
-        return a.first < b.first;
+        return a.first > b.first;
     };
 
     std::priority_queue<
         std::pair<double, std::string>,
         std::vector<std::pair<double, std::string>>,
         decltype(comp)
-    > maxHeap(comp);
+    > minHeap(comp);
 
     for (const auto& [invoiceID, vec] : allInvoiceCat) {
         if (invoiceID == baseInvoice) continue;
@@ -207,21 +216,12 @@ void showSimilarTransactions()
         }
         dist = std::sqrt(dist);
 
-        maxHeap.emplace(dist, invoiceID);
-        if ((int)maxHeap.size() > topN) {
-            maxHeap.pop();
-        }
+        minHeap.emplace(dist, invoiceID);
     }
 
-    std::vector<std::pair<double, std::string>> results;
-    while (!maxHeap.empty()) {
-        results.push_back(maxHeap.top());
-        maxHeap.pop();
-    }
-    std::reverse(results.begin(), results.end());
-
-    std::cout << "[Top " << topN << " Similar Transactions using Heap]" << std::endl;
-    for (const auto& [dist, id] : results) {
+    std::cout << "[Top " << topN << " Similar Transactions using Min-Heap]" << std::endl;
+    for (int i = 0; i < topN && !minHeap.empty(); ++i) {
+        auto [dist, id] = minHeap.top(); minHeap.pop();
         std::cout << "Invoice: " << id
                   << " | Similarity Distance: " << dist << std::endl;
     }
